@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CTheme {
+final class CTheme {
     // Base colors
     static const Color primary = Color(0xFF72BBFF);
     static const Color onPrimary = Color(0xFF1B1B1C);
