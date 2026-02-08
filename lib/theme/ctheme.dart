@@ -13,7 +13,7 @@ final class CTheme {
     static const Color opacityBG = Color(0x0AFFFFFF);
     static const Color surface = Color(0xFF161617);
     static const Color onSurface = Colors.white;
-    static const Color surfaceContainer = Color(0xFF242424);
+    static const Color surfaceContainer = Color(0xFF192020);
     // Light mode
     static const Color lopacityBG = Color(0x0AFFFFFF);
     static const Color lsurface = Color(0xFF161617);
@@ -26,6 +26,16 @@ final class CTheme {
         final theme = brightness == Brightness.dark ? ThemeData.dark().textTheme : ThemeData.light().textTheme;
         return GoogleFonts.plusJakartaSansTextTheme(theme);
     }
-    static ThemeData get cLightTheme => ThemeData.from(colorScheme: cLightScheme, textTheme: cTextTheme(Brightness.light));
-    static ThemeData get cDarkTheme => ThemeData.from(colorScheme: cDarkScheme, textTheme: cTextTheme(Brightness.dark));
+    static NavigationBarThemeData cNavbarTheme = NavigationBarThemeData(
+      indicatorColor: primary.withValues(alpha: 0.3),
+      labelTextStyle: WidgetStatePropertyAll(cTextTheme(Brightness.dark).labelLarge?.copyWith(color: primary)),
+      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: primary);
+        }
+        return const IconThemeData(color: onSurface); // Uses default unselected color
+      }));
+    static ThemeData get cLightTheme => ThemeData.from(colorScheme: cLightScheme, textTheme: cTextTheme(Brightness.light)).copyWith(navigationBarTheme: cNavbarTheme);
+    static ThemeData get cDarkTheme => ThemeData.from(colorScheme: cDarkScheme, textTheme: cTextTheme(Brightness.dark)).copyWith(navigationBarTheme: cNavbarTheme);
 }
