@@ -1,10 +1,10 @@
-import 'package:coiner/view/widgets/animated_index_stack.dart';
-import 'package:coiner/view/widgets/blurred_navigation_bar.dart';
+import 'package:coiner/core/widgets/animated_index_stack.dart';
+import 'package:coiner/core/widgets/blurred_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({super.key, required this.children, required this.navigationShell});
+class MainNavShell extends StatelessWidget {
+  const MainNavShell({super.key, required this.children, required this.navigationShell});
   final StatefulNavigationShell navigationShell;
   final List<Widget> children;
 

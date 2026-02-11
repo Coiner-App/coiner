@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:coiner/view/main_view.dart';
-import 'package:coiner/view/nav_pages/home/home_view.dart';
-import 'package:coiner/view/nav_pages/explore/explore_view.dart';
-import 'package:coiner/view/nav_pages/account/account_view.dart';
+import 'package:coiner/app/main_nav_shell.dart';
+import 'package:coiner/features/home/home_view.dart';
+import 'package:coiner/features/explore/explore_view.dart';
+import 'package:coiner/features/account/account_view.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +25,7 @@ final appRouter = GoRouter(
         ])
       ],
       builder: (context, state, navigationShell) => navigationShell,
-      navigatorContainerBuilder: (context, state, child) => MainView(navigationShell: state, children: child)
+      navigatorContainerBuilder: (context, state, child) => MainNavShell(navigationShell: state, children: child)
     )
   ],
   initialLocation: '/'
