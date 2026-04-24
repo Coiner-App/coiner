@@ -5,7 +5,7 @@ class ApiResult<T> {
   final Failure? failure;
 
   ApiResult.success(this.data) : failure = null;
-  ApiResult.failure(this.failure) : data = null;
+  ApiResult.failure(Failure f) : failure = f, data = null;
 
-  bool get isSuccess => data != null;
+  bool get isSuccess => failure == null;
 }

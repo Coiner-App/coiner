@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:coiner/app/main_nav_shell.dart';
 import 'package:coiner/features/home/home_view.dart';
 import 'package:coiner/features/explore/explore_view.dart';
-import 'package:coiner/features/account/account_view.dart';
+import 'package:coiner/features/account/presentation/account_view.dart';
 
 import 'package:go_router/go_router.dart';
 
