@@ -2,11 +2,18 @@ import 'package:dio/dio.dart';
 import 'failure.dart';
 
 Failure mapDioError(DioException e) {
-  if (e.type == DioExceptionType.connectionTimeout ||
-      e.type == DioExceptionType.connectionError) {
+  if (e.type == DioExceptionType.connectionTimeout) {
     return Failure(
       type: FailureType.network,
-      message: "No internet connection",
+      message: "Connection timed out. Please check your internet.",
+      retryable: true,
+    );
+  }
+
+  if (e.type == DioExceptionType.connectionError) {
+    return Failure(
+      type: FailureType.network,
+      message: "Unable to connect to the server. It might be down or you are offline.",
       retryable: true,
     );
   }

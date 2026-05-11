@@ -1,11 +1,14 @@
 import 'package:coiner/core/network/dio/dio_client.dart';
 import 'package:coiner/core/network/result/api_result.dart';
 import 'package:coiner/core/network/result/failure.dart';
+import 'package:coiner/core/storage/secure_storage_storage_impl.dart';
+import 'package:coiner/core/storage/shared_prefs_storage_impl.dart';
 import 'package:coiner/core/storage/storage_base.dart';
 import 'package:coiner/features/authentication/data/dto/auth_dto.dart';
 import 'package:coiner/features/account/domain/models/current_user.dart';
 import 'package:coiner/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final DioClient _dioClient;
@@ -58,3 +61,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     return ApiResult.success(null);
   }
 }
+
+final authRepositoryProvider = Provider<AuthenticationRepository>((ref) {
+  return AuthenticationRepositoryImpl(
+    ref.read(dioClientProvider),
+    ref.read(secureStorageProvider),
+    ref.read(sharedPrefsStorageProvider),
+  );
+});

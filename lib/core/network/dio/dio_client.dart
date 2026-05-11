@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:coiner/core/network/result/api_result.dart';
 import 'package:coiner/core/network/result/error_mapper.dart';
@@ -94,3 +95,5 @@ class DioClient {
         }
     }
 }
+
+final dioClientProvider = Provider<DioClient>((ref) => DioClient());

@@ -1,4 +1,5 @@
 import 'package:coiner/core/storage/storage_base.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageImpl implements StorageBase {
@@ -39,3 +40,5 @@ class SecureStorageImpl implements StorageBase {
     await _secureStorage.deleteAll();
   }
 }
+
+final secureStorageProvider = Provider<StorageBase>((ref) => SecureStorageImpl(FlutterSecureStorage()));

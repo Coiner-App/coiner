@@ -1,4 +1,5 @@
 import 'package:coiner/core/storage/storage_base.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsStorageImpl implements StorageBase {
@@ -96,3 +97,5 @@ class SharedPrefsStorageImpl implements StorageBase {
   }
 
 }
+
+final sharedPrefsStorageProvider = Provider<StorageBase>((ref) => SharedPrefsStorageImpl(SharedPreferencesAsync()));

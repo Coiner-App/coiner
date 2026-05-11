@@ -28,5 +28,8 @@ final appRouter = GoRouter(
       navigatorContainerBuilder: (context, state, child) => MainNavShell(navigationShell: state, children: child)
     )
   ],
-  initialLocation: '/'
+  initialLocation: '/',
+  redirect: (context, state) {
+    final targetLocation = state.matchedLocation;
+  },
 );

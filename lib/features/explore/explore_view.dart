@@ -1,3 +1,4 @@
+import 'package:coiner/features/authentication/presentation/screens/login_input.dart';
 import 'package:flutter/widgets.dart';
 
 class ExploreView extends StatelessWidget {
@@ -5,6 +6,6 @@ class ExploreView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return LoginInput();
   }
 }

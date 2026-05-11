@@ -13,7 +13,7 @@ final class CTheme {
     static const Color opacityBG = Color(0x0AFFFFFF);
     static const Color surface = Color(0xFF161617);
     static const Color onSurface = Colors.white;
-    static const Color surfaceContainer = Color(0xFF192020);
+    static const Color surfaceContainer = Color(0xFF1F1F20);
     // Light mode
     static const Color lopacityBG = Color(0x0AFFFFFF);
     static const Color lsurface = Color(0xFF161617);
