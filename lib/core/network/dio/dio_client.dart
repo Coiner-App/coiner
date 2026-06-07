@@ -6,9 +6,13 @@ import 'package:coiner/core/network/result/error_mapper.dart';
 import 'package:coiner/core/network/result/failure.dart';
 
 class DioClient {
-    DioClient();
+  static const String _baseUrl = String.fromEnvironment(
+    'BASE_URL',
+    defaultValue: 'http://127.0.0.1:8000',
+  );
+
     static final dio = Dio(BaseOptions(
-        baseUrl: 'https://example.com',
+        baseUrl: _baseUrl,
         receiveDataWhenStatusError: true,
         responseType: ResponseType.json,
         //contentType: Headers.formUrlEncodedContentType,
