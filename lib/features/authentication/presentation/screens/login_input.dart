@@ -4,17 +4,25 @@ import 'package:coiner/app/ctheme.dart';
 import 'package:coiner/core/utils/screen_util.dart';
 import 'package:coiner/features/authentication/presentation/state_providers/authentication_state_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoginInput extends ConsumerWidget {
+class LoginInput extends HookConsumerWidget {
   const LoginInput({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final emailTxt = TextEditingController();
-    final passTxt = TextEditingController();
+    final emailValidator = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    final emailTxt = useTextEditingController();
+    final emailError = useState<String?>(null);
+    final passShow = useState<bool>(false);
+    final passTxt = useTextEditingController();
+    final passError = useState<String?>(null);
     final authState = ref.watch(authStateControllerProvider);
+
+    late final bool activateLogin = authState.isLoading || emailError.value != null || passError.value != null || emailTxt.text.isEmpty || passTxt.text.isEmpty;
 
     // Listen for auth state
     ref.listen<AsyncValue<void>>(authStateControllerProvider, (previous, next) {
@@ -96,6 +104,15 @@ class LoginInput extends ConsumerWidget {
                       child: TextField(
                         controller: emailTxt,
                         autofocus: false,
+                        autocorrect: false,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) {
+                          if (emailValidator.hasMatch(value) && emailTxt.text.isNotEmpty) {
+                            emailError.value = null;
+                          } else {
+                            emailError.value = "Invalid email address";
+                          }
+                        },
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                             hintText: "Email address",
@@ -110,7 +127,8 @@ class LoginInput extends ConsumerWidget {
                                     BorderRadius.all(Radius.circular(8.0)),
                                 borderSide: BorderSide.none),
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 20.0)),
+                                horizontal: 16.0, vertical: 20.0),
+                            errorText: emailError.value),
                       ),
                     ),
                     Padding(
@@ -118,6 +136,16 @@ class LoginInput extends ConsumerWidget {
                       child: TextField(
                         controller: passTxt,
                         autofocus: false,
+                        autocorrect: false,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: !passShow.value,
+                        onChanged: (value) {
+                          if (value.length >= 8) {
+                            passError.value = null;
+                          } else {
+                            passError.value = "Password must be at least 8 characters";
+                          }
+                        },
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                             hintText: "Password",
@@ -132,14 +160,27 @@ class LoginInput extends ConsumerWidget {
                                     BorderRadius.all(Radius.circular(8.0)),
                                 borderSide: BorderSide.none),
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 20.0)),
+                                horizontal: 16.0, vertical: 20.0),
+                                errorText: passError.value),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: CheckboxListTile(
+                        value: passShow.value,
+                        title: const Text("Show password"),
+                        onChanged:(value) => passShow.value = value!,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        dense: true,
+                        enableFeedback: true,
                       ),
                     ),
                     Container(width: 32.0, height: 2, color: theme.buttonTheme.colorScheme?.surfaceContainer),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
                       child: TextButton(
-                        onPressed: authState.isLoading ? null : () async => 
+                        onPressed: activateLogin ? null : () async => 
                         await ref.read(authStateControllerProvider.notifier).login(emailTxt.text, passTxt.text),
                         style: TextButton.styleFrom(
                           foregroundColor: CTheme.primary,
