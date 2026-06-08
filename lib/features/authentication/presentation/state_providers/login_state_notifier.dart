@@ -17,7 +17,7 @@ class LoginStateNotifier extends AsyncNotifier<void> {
     final result = await _repository.login(email: email, password: password);
     if (result.isSuccess) {
       state = const AsyncData(null);
-      ref.invalidate(authStateProvider);
+      ref.read(authStateProvider.notifier).refreshSession();
       return true;
     } else {
       state = AsyncError(result.failure!.message, StackTrace.current);
