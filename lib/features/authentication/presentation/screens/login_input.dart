@@ -2,10 +2,9 @@ import 'dart:developer';
 
 import 'package:coiner/app/ctheme.dart';
 import 'package:coiner/core/utils/screen_util.dart';
-import 'package:coiner/features/authentication/presentation/state_providers/authentication_state_controller.dart';
+import 'package:coiner/features/authentication/presentation/state_providers/login_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class LoginInput extends HookConsumerWidget {
@@ -105,6 +104,7 @@ class LoginInput extends HookConsumerWidget {
                         controller: emailTxt,
                         autofocus: false,
                         autocorrect: false,
+                        autofillHints: const [AutofillHints.email],
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (value) {
                           if (emailValidator.hasMatch(value) && emailTxt.text.isNotEmpty) {
@@ -138,6 +138,7 @@ class LoginInput extends HookConsumerWidget {
                         autofocus: false,
                         autocorrect: false,
                         keyboardType: TextInputType.visiblePassword,
+                        autofillHints: const [AutofillHints.password],
                         obscureText: !passShow.value,
                         onChanged: (value) {
                           if (value.length >= 8) {

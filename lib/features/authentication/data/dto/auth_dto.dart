@@ -13,7 +13,7 @@ class AuthDto extends Equatable {
       userId: json['user_id'] as String,
       accessToken: json['access_token'] as String,
       refreshToken: json['refresh_token'] as String,
-      expiresAfter: json['expires_after'] as int,
+      expiresAfter: json['expiresafter'] as int,
     );
   }
 
@@ -22,7 +22,7 @@ class AuthDto extends Equatable {
       'user_id': userId,
       'access_token': accessToken,
       'refresh_token': refreshToken,
-      'expires_after': expiresAfter,
+      'expiresafter': expiresAfter,
     };
   }
 
