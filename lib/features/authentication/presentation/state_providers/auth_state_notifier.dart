@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coiner/features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'package:coiner/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +19,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthenticationStatus> {
   }
 
   void refreshSession() {
-    ref.invalidateSelf(); 
+    ref.invalidateSelf();
   }
 }
 

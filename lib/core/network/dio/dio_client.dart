@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:coiner/core/network/interceptors/auth_dio_interceptor.dart';
+
 import 'package:coiner/core/network/result/api_result.dart';
 import 'package:coiner/core/network/result/error_mapper.dart';
 import 'package:coiner/core/network/result/failure.dart';
@@ -15,9 +17,12 @@ class DioClient {
         baseUrl: _baseUrl,
         receiveDataWhenStatusError: true,
         responseType: ResponseType.json,
-        //contentType: Headers.formUrlEncodedContentType,
-        connectTimeout: Duration(seconds: 15)
+        connectTimeout: Duration(seconds: 15),
     ));
+
+    DioClient(final Ref ref) {
+      dio.interceptors.add(AuthDioInterceptor(ref));
+    }
 
     Future<ApiResult<Response>> getRaw(
           String path, {
@@ -53,6 +58,8 @@ class DioClient {
             return ApiResult.success(parser(response.data));
         } on DioException catch (e) {
             return ApiResult.failure(mapDioError(e));
+        } on TypeError catch(_) {
+          rethrow;
         } catch (e) {
             return ApiResult.failure(Failure(type: FailureType.unknown, message: e.toString()));
         }
@@ -100,4 +107,4 @@ class DioClient {
     }
 }
 
-final dioClientProvider = Provider<DioClient>((ref) => DioClient());
+final dioClientProvider = Provider<DioClient>((ref) => DioClient(ref));

@@ -25,8 +25,8 @@ class CurrentUser extends Equatable {
       publicid: json['publicid'] as int,
       username: json['username'] as String,
       displayName: json['displayname'] as String,
-      isPrivate: json['isprivate'] as bool,
-      isVerified: json['isverified'] as bool,
+      isPrivate: json['private'] as bool,
+      isVerified: json['verified'] as bool,
       privateMail: json['privatemail'] as bool,
     );
   }
@@ -37,8 +37,8 @@ class CurrentUser extends Equatable {
       'publicid': publicid,
       'username': username,
       'displayname': displayName,
-      'isprivate': isPrivate,
-      'isverified': isVerified,
+      'private': isPrivate,
+      'verified': isVerified,
       'privatemail': privateMail,
     };
   }

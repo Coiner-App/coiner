@@ -13,7 +13,7 @@ class SecureStorageImpl implements StorageBase {
   }
 
   @override
-  Future<Object?> get(String key) async {
+  Future<String?> get(String key) async {
     return await _secureStorage.read(key: key);
   }
 

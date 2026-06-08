@@ -65,8 +65,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authStateProvider);
       final goingToLogin = state.matchedLocation == '/login';
-      final goingToSplash = state.matchedLocation == '/splash';
-      log(authState.value.toString());
+      final goingToSplash = state.matchedLocation == '/';
+      log("AuthState: ${authState.value.toString()}");
       return authState.when(
         data: (state) {
           switch (state) {
@@ -84,6 +84,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           }
         },
         error: (err, stack) {
+          log("RIVERPOD ERROR STATE: $err\n$stack");
           return null;
         },
         loading: () => null

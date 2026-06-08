@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:coiner/core/storage/storage_base.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheStorageImpl implements StorageBase {
@@ -15,7 +16,7 @@ class CacheStorageImpl implements StorageBase {
   }
 
   @override
-  Future<Object?> get(String key) async {
+  Future<String?> get(String key) async {
     final jsonString = await _cachePrefs.getString(key);
     try {
       final json = jsonString != null ? jsonDecode(jsonString) : null;
@@ -47,3 +48,5 @@ class CacheStorageImpl implements StorageBase {
     await _cachePrefs.clear();
   }
 }
+
+final cacheStorageProvider = Provider<StorageBase>((ref) => CacheStorageImpl(SharedPreferencesAsync()));
