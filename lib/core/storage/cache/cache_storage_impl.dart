@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
+import 'package:coiner/core/logging/app_logger.dart';
 import 'package:coiner/core/storage/storage_base.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +23,7 @@ class CacheStorageImpl implements StorageBase {
       final json = jsonString != null ? jsonDecode(jsonString) : null;
       return json;
     } catch (_) {
-      log("Invalid JSON format for key: $key");
+      AppLogger.error("Invalid JSON format for key: $key");
       return null;
     }
   }

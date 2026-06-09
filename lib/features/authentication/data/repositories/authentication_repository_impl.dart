@@ -1,16 +1,14 @@
-import 'dart:developer';
-
 import 'package:coiner/core/network/dio/dio_client.dart';
 import 'package:coiner/core/network/jwt_provider.dart';
 import 'package:coiner/core/network/result/api_result.dart';
 import 'package:coiner/core/network/result/failure.dart';
 import 'package:coiner/core/storage/cache/cache_storage_impl.dart';
 import 'package:coiner/core/storage/secure_storage_storage_impl.dart';
-import 'package:coiner/core/storage/shared_prefs_storage_impl.dart';
 import 'package:coiner/core/storage/storage_base.dart';
 import 'package:coiner/features/authentication/data/dto/auth_dto.dart';
 import 'package:coiner/features/account/domain/models/current_user.dart';
 import 'package:coiner/features/authentication/domain/repositories/authentication_repository.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +25,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     final ApiResult<AuthDto> rs = await _dioClient.postData<AuthDto>("/auth/login", data: {"email": email, "password": password}, parser: (json) => AuthDto.fromJson(json));
     if (rs.isSuccess) {
       await _authStorage.set("accesstkn", rs.data?.accessToken);
-      log("access token: ${rs.data!.accessToken}");
       _jwtProvider.setToken(rs.data?.accessToken);
       await _authStorage.set("refreshtkn", rs.data?.refreshToken);
       await _cacheStorage.set("expiration", DateTime.now().add(Duration(seconds: rs.data!.expiresAfter)).toIso8601String());
@@ -39,7 +36,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<ApiResult<AuthenticationStatus>> checkSession() async {
     final ApiResult<CurrentUser> rs = await _dioClient.getData<CurrentUser>("/api/user/me", parser: (rs) => CurrentUser.fromJson(rs));
-    log("CheckSession: ${rs.failure?.message.toString()}\nCheckSession result: ${rs.isSuccess} ${rs.data.toString()}");
     if (rs.isSuccess) {
       await _cacheStorage.set("user", rs.data!.toJson());
       return ApiResult.success(AuthenticationStatus.authenticated);

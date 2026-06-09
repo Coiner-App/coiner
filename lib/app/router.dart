@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coiner/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
 
@@ -66,7 +64,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final authState = ref.read(authStateProvider);
       final goingToLogin = state.matchedLocation == '/login';
       final goingToSplash = state.matchedLocation == '/';
-      log("AuthState: ${authState.value.toString()}");
       return authState.when(
         data: (state) {
           switch (state) {
@@ -84,8 +81,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           }
         },
         error: (err, stack) {
-          log("RIVERPOD ERROR STATE: $err\n$stack");
-          return null;
+          return null; // TODO: Implement error screen
         },
         loading: () => null
       );

@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:coiner/features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'package:coiner/features/authentication/domain/repositories/authentication_repository.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 1. Create the Notifier
