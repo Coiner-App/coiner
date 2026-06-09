@@ -1,7 +1,6 @@
 import 'package:coiner/core/network/result/api_result.dart';
 
 abstract class AuthenticationRepository {
-  Future<void> initialize();
   Future<ApiResult<void>> login({required String email, required String password});
   Future<ApiResult<AuthenticationStatus>> checkSession();
   Future<ApiResult<AuthenticationStatus>> refreshJwt();

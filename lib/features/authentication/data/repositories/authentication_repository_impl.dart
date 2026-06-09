@@ -23,12 +23,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   AuthenticationRepositoryImpl(this._dioClient, this._authStorage, this._cacheStorage, this._jwtProvider);
 
   @override
-  Future<void> initialize() async {
-    final accessToken = await _authStorage.get("accesstkn");
-    _jwtProvider.setToken(accessToken as String?);
-  }
-
-  @override
   Future<ApiResult<void>> login({required String email, required String password}) async {
     final ApiResult<AuthDto> rs = await _dioClient.postData<AuthDto>("/auth/login", data: {"email": email, "password": password}, parser: (json) => AuthDto.fromJson(json));
     if (rs.isSuccess) {
