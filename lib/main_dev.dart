@@ -25,22 +25,22 @@ void main() async {
     return true; 
   };
 
-  final authStorage = FlutterSecureStorage();
-  String? accessToken;
-  try {
-    accessToken = await authStorage.read(key: "accesstkn");
-  } catch (e) {
-    AppLogger.warning("Access token read error: ${e.toString()}", StackTrace.current);
-    await authStorage.delete(key: "accesstkn");
-    accessToken = null;
-  }
+  // final authStorage = FlutterSecureStorage();
+  // String? accessToken;
+  // try {
+  //   accessToken = await authStorage.read(key: "accesstkn");
+  // } catch (e) {
+  //   AppLogger.warning("Access token read error: ${e.toString()}", StackTrace.current);
+  //   await authStorage.delete(key: "accesstkn");
+  //   accessToken = null;
+  // }
 
   runApp(
     ProviderScope(
       observers: [ProviderLogger()],
       overrides: [
-        jwtProvider.overrideWithBuild((ref, _) => accessToken),
-        secureStorageProvider.overrideWith((ref) => SecureStorageImpl(authStorage))
+        //jwtProvider.overrideWithBuild((ref, _) => accessToken),
+        //secureStorageProvider.overrideWith((ref) => SecureStorageImpl(authStorage))
       ],
       child: const MainApp(),
     ),

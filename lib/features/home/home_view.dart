@@ -25,7 +25,7 @@ class HomeView extends ConsumerWidget {
           body: Center(child: TextButton(onPressed: () async {
             final res = await ref.read(dioClientProvider).getRaw("/api/user/me");
             if (res.isSuccess) {
-              AppLogger.debug(res.data?.data);
+              AppLogger.debug(res.data!.data.toString());
             } else {
               AppLogger.debug(res.failure?.message ?? res.failure!.type.toString());
             }

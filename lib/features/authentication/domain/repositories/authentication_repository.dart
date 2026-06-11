@@ -3,7 +3,7 @@ import 'package:coiner/core/network/result/api_result.dart';
 abstract class AuthenticationRepository {
   Future<ApiResult<void>> login({required String email, required String password});
   Future<ApiResult<AuthenticationStatus>> checkSession();
-  Future<ApiResult<AuthenticationStatus>> refreshJwt();
+  Future<ApiResult<String?>> refreshJwt();
   Future<ApiResult<void>> logout();
   Future<bool> forceLogout();
   //Future<int?> getCurrentUser();

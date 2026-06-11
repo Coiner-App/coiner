@@ -26,8 +26,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<ApiResult<void>> login({required String email, required String password}) async {
     final ApiResult<AuthDto> rs = await _dioClient.postData<AuthDto>("/auth/login", data: {"email": email, "password": password}, parser: (json) => AuthDto.fromJson(json));
     if (rs.isSuccess) {
-      await _authStorage.set("accesstkn", rs.data?.accessToken);
-      _jwtProvider.setToken(rs.data?.accessToken);
+      await _jwtProvider.setToken(rs.data?.accessToken);
       await _authStorage.set("refreshtkn", rs.data?.refreshToken);
       await _cacheStorage.set("expiration", DateTime.now().add(Duration(seconds: rs.data!.expiresAfter)).toIso8601String());
       return ApiResult.success(null);
@@ -58,11 +57,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<ApiResult<AuthenticationStatus>> refreshJwt() async {
+  Future<ApiResult<String?>> refreshJwt() async {
     final refreshToken = await _authStorage.get("refreshtkn");
     String? expiration = await _cacheStorage.get("expiration") as String?;
     final expirationDate = expiration == null ? null : DateTime.parse(expiration);
-    if (refreshToken == null || expirationDate == null || expirationDate.isBefore(DateTime.now())) return await checkSession();
+    if (refreshToken == null || expirationDate == null || expirationDate.isBefore(DateTime.now())) {
+      return ApiResult.failure(Failure(type: FailureType.unauthorized, statusCode: 401, message: "Session expired"));
+    }
     final Response rs;
     try {
       rs = await _authDio.post(
@@ -78,11 +79,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
     final String? accessToken = rs.data["access_token"];
     if (accessToken != null) {
-      await _authStorage.set("accesstkn", accessToken); // could fail
-      _jwtProvider.setToken(accessToken); // will 99.9% succeed no matter what, state is officially unsynced, next app restart could be disastrous
-      return ApiResult.success(AuthenticationStatus.authenticated);
+      await _jwtProvider.setToken(accessToken);
+      return ApiResult.success(accessToken);
     } else {
-      return ApiResult.failure(Failure(type: FailureType.unknown, message: "Server did not report access token, contact support."));
+      return ApiResult.failure(Failure(type: FailureType.server, message: "Server did not report access token, contact support."));
     }
   }
 
@@ -90,9 +90,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<ApiResult<void>> logout() async {
     final ApiResult<Response> rs = await _dioClient.postRaw("/auth/logout");    
     if (rs.isSuccess) {
-      _authStorage.remove("accesstkn");
       _authStorage.remove("refreshtkn");
-      _jwtProvider.clearToken();
+      await _jwtProvider.clearToken();
       _cacheStorage.remove("user");
     }
     return ApiResult.success(null);
@@ -105,12 +104,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } catch (_) {}
     try {
       await Future.wait([
-        _authStorage.remove("accesstkn"),
         _authStorage.remove("refreshtkn"),
         _cacheStorage.remove("expiration"),
         _cacheStorage.remove("user"),
+        _jwtProvider.clearToken()
       ]);
-      _jwtProvider.clearToken();
     } catch(e) {
       return false;
     }

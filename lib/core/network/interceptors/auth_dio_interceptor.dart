@@ -8,9 +8,9 @@ class AuthDioInterceptor extends InterceptorsWrapper {
   AuthDioInterceptor(this._ref);
   
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     if (options.extra['skipAuth'] == true) return handler.next(options);
-    final token = _ref.read(jwtProvider);
+    final token = await _ref.read(jwtProvider.future);
     
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
