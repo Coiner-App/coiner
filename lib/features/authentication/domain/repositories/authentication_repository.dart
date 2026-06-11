@@ -5,6 +5,7 @@ abstract class AuthenticationRepository {
   Future<ApiResult<AuthenticationStatus>> checkSession();
   Future<ApiResult<AuthenticationStatus>> refreshJwt();
   Future<ApiResult<void>> logout();
+  Future<bool> forceLogout();
   //Future<int?> getCurrentUser();
 }
 

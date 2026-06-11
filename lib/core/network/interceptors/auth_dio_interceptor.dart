@@ -9,16 +9,12 @@ class AuthDioInterceptor extends InterceptorsWrapper {
   
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (options.extra['skipAuth'] == true) return handler.next(options);
     final token = _ref.read(jwtProvider);
     
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }
     return handler.next(options);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    return handler.next(err);
   }
 }

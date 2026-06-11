@@ -73,7 +73,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
             case AuthenticationStatus.authenticated:
             case AuthenticationStatus.cached:
-            case AuthenticationStatus.offline:
+            case AuthenticationStatus.offline: // TODO: Move offline state
               if (goingToLogin || goingToSplash) {
                 return '/dashboard'; 
               }

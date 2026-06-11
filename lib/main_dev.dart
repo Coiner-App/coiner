@@ -26,7 +26,14 @@ void main() async {
   };
 
   final authStorage = FlutterSecureStorage();
-  final accessToken = await authStorage.read(key: "accesstkn");
+  String? accessToken;
+  try {
+    accessToken = await authStorage.read(key: "accesstkn");
+  } catch (e) {
+    AppLogger.warning("Access token read error: ${e.toString()}", StackTrace.current);
+    await authStorage.delete(key: "accesstkn");
+    accessToken = null;
+  }
 
   runApp(
     ProviderScope(
