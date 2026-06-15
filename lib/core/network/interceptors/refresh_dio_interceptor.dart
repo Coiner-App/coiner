@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RefreshDioInterceptor extends QueuedInterceptorsWrapper {
+  // ignore: unused_field
   final Dio _dio;
   final Dio _refreshDio;
   final Ref _ref;
