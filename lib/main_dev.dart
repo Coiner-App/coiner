@@ -13,12 +13,12 @@ void main() async {
    */
   // Catch synchronous Flutter UI crashes
   FlutterError.onError = (details) {
-    AppLogger.error('FLUTTER UI CRASH: ${details.exception}', details.exception, details.stack);
+    AppLogger.error('FLUTTER UI CRASH:', details.exception, details.stack);
   };
 
   // Catch async dart background crashes
   PlatformDispatcher.instance.onError = (error, stack) {
-    AppLogger.error('DART ASYNC CRASH', error, stack);
+    AppLogger.error('DART ASYNC CRASH:', error, stack);
     return true; 
   };
 

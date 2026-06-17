@@ -11,26 +11,26 @@ class AppLogger {
 
   static void debug(String message) {
     if (!kDebugMode) return;
-    dev.log('[DEBUG]: $message', name: 'DEBUG');
+    dev.log(message, name: 'DEBUG');
     _sendToNative('DEBUG', message);
   }
 
   static void info(String message) {
     if (!kDebugMode) return;
-    dev.log('[INFO]: $message', name: 'INFO');
+    dev.log(message, name: 'INFO');
     _sendToNative('INFO', message);
   }
 
   static void warning(String message, [Object? error, StackTrace? stackTrace]) {
     if (kDebugMode) {
-      dev.log('[WARN] $message', name: 'WARNING', error: error, stackTrace: stackTrace);
+      dev.log(message, name: 'WARNING', error: error, stackTrace: stackTrace);
     }
     _sendToNative('WARNING', '$message ${error ?? ""}');
   }
 
   static void error(String message, [Object? error, StackTrace? stackTrace]) {
     if (kDebugMode) {
-      dev.log('[ERROR] $message', name: 'ERROR', error: error, stackTrace: stackTrace);
+      dev.log(message, name: 'ERROR', error: error, stackTrace: stackTrace);
     }
     _sendToNative('ERROR', '$message ${error ?? ""} \n$stackTrace');
   }

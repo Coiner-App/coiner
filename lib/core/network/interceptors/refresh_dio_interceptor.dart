@@ -40,7 +40,7 @@ class RefreshDioInterceptor extends QueuedInterceptorsWrapper {
           return handler.next(err);
         }
       } catch (e) {
-        AppLogger.error(e.toString(), StackTrace.current);
+        AppLogger.error("Error refreshing token", e, StackTrace.current);
         return handler.next(err);
       }
     }

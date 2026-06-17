@@ -10,7 +10,7 @@ class JwtProvider extends AsyncNotifier<String?> {
     try {
       accessToken = (await authStorage.get("accesstkn")) as String?;
     } catch (e) {
-      AppLogger.warning("Access token read error: ${e.toString()}", StackTrace.current);
+      AppLogger.warning("Access token read error:", e, StackTrace.current);
       await authStorage.remove("accesstkn");
       accessToken = null;
     }
