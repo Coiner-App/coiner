@@ -19,12 +19,12 @@ class LoginInput extends HookConsumerWidget {
     final passShow = useState<bool>(false);
     final passTxt = useTextEditingController();
     final passError = useState<String?>(null);
-    final authState = ref.watch(authStateControllerProvider);
+    final authState = ref.watch(loginStateProvider);
 
     late final bool activateLogin = authState.isLoading || emailError.value != null || passError.value != null || emailTxt.text.isEmpty || passTxt.text.isEmpty;
 
     // Listen for auth state
-    ref.listen<AsyncValue<void>>(authStateControllerProvider, (previous, next) {
+    ref.listen<AsyncValue<void>>(loginStateProvider, (previous, next) {
     if (!next.isLoading && next.hasError) {
       showDialog(
         context: context, 
@@ -182,7 +182,7 @@ class LoginInput extends HookConsumerWidget {
                       padding: const EdgeInsets.only(top: 12.0),
                       child: TextButton(
                         onPressed: activateLogin ? null : () async => 
-                        await ref.read(authStateControllerProvider.notifier).login(emailTxt.text, passTxt.text),
+                        await ref.read(loginStateProvider.notifier).login(emailTxt.text, passTxt.text),
                         style: TextButton.styleFrom(
                           foregroundColor: CTheme.primary,
                           backgroundColor: CTheme.primary.withAlpha(33), //0.2 opacity

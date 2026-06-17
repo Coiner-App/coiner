@@ -20,10 +20,10 @@ class CacheStorageImpl implements StorageBase {
   Future<String?> get(String key) async {
     final jsonString = await _cachePrefs.getString(key);
     try {
-      final json = jsonString != null ? jsonDecode(jsonString) : null;
+      final json = jsonString;
       return json;
-    } catch (_) {
-      AppLogger.error("Invalid JSON format for key: $key");
+    } catch (e) {
+      AppLogger.error("Error decoding JSON string: $jsonString", e, StackTrace.current);
       return null;
     }
   }

@@ -26,4 +26,4 @@ class LoginStateNotifier extends AsyncNotifier<void> {
   }
 }
 
-final authStateControllerProvider = AsyncNotifierProvider<LoginStateNotifier, void>(() => LoginStateNotifier());
+final loginStateProvider = AsyncNotifierProvider<LoginStateNotifier, void>(() => LoginStateNotifier());

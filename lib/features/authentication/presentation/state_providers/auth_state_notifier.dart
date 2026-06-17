@@ -13,14 +13,19 @@ class AuthStateNotifier extends AsyncNotifier<AuthenticationStatus> {
   }
 
   Future<AuthenticationStatus> checkSession() async {
-    final repo = ref.watch(authRepositoryProvider);
-    final result = await repo.checkSession();
+    final rs = await ref.read(authRepositoryProvider).checkSession();
     
-    if (result.isSuccess) {
-      return result.data!;
+    if (rs.isSuccess) {
+      return rs.data!;
     }
     
     return AuthenticationStatus.error; 
+  }
+
+  Future<bool> logout() async {
+    state = const AsyncValue.loading();
+    final rs = await ref.read(authRepositoryProvider).logout();
+    return rs.isSuccess ? true : false;
   }
 
   void refreshSession() {
